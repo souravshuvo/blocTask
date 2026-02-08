@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/models.dart';
 import '../utils/api_constants.dart';
@@ -7,6 +8,20 @@ import 'storage_service.dart';
 
 class ApiService {
   final StorageService _storage = StorageService();
+
+  // Helper method to handle network errors with user-friendly messages
+  String _getNetworkErrorMessage(dynamic error) {
+    if (error is SocketException) {
+      return 'No internet connection. Please check your network settings.';
+    } else if (error is TimeoutException) {
+      return 'Connection timeout. Please try again.';
+    } else if (error is http.ClientException) {
+      return 'Network error. Please check your connection.';
+    } else if (error is FormatException) {
+      return 'Invalid response from server.';
+    }
+    return 'Network error: ${error.toString()}';
+  }
 
   Future<AuthResponse> login(String login, String password) async {
     try {
@@ -21,7 +36,12 @@ class ApiService {
           'login': int.parse(login), // API expects integer
           'password': password,
         }),
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          throw TimeoutException('Connection timeout after 30 seconds');
+        },
+      );
 
       print('📡 Response Status: ${response.statusCode}');
       print('📦 Response Body: ${response.body}');
@@ -61,11 +81,29 @@ class ApiService {
           message: 'Server error (Status: ${response.statusCode})',
         );
       }
+    } on SocketException catch (e) {
+      print('❌ Socket Exception: $e');
+      return AuthResponse(
+        success: false,
+        message: 'No internet connection. Please check your network.',
+      );
+    } on TimeoutException catch (e) {
+      print('❌ Timeout Exception: $e');
+      return const AuthResponse(
+        success: false,
+        message: 'Connection timeout. Please try again.',
+      );
+    } on FormatException catch (e) {
+      print('❌ Format Exception: $e');
+      return const AuthResponse(
+        success: false,
+        message: 'Invalid server response.',
+      );
     } catch (e) {
       print('❌ Exception during login: $e');
       return AuthResponse(
         success: false,
-        message: 'Network error: ${e.toString()}',
+        message: _getNetworkErrorMessage(e),
       );
     }
   }
@@ -82,7 +120,7 @@ class ApiService {
           'login': int.parse(login),
           'token': token,
         }),
-      );
+      ).timeout(const Duration(seconds: 30));
 
       print('📋 Account Info Response: ${response.statusCode}');
       print('📦 Account Info Body: ${response.body}');
@@ -94,6 +132,9 @@ class ApiService {
         await _handleTokenExpiration();
         return null;
       }
+    } on SocketException catch (e) {
+      print('❌ Network error fetching account info: $e');
+      rethrow;
     } catch (e) {
       print('Error fetching account info: $e');
     }
@@ -112,7 +153,7 @@ class ApiService {
           'login': int.parse(login),
           'token': token,
         }),
-      );
+      ).timeout(const Duration(seconds: 30));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
@@ -128,6 +169,8 @@ class ApiService {
       } else if (response.statusCode == 401) {
         await _handleTokenExpiration();
       }
+    } on SocketException catch (e) {
+      print('❌ Network error fetching phone: $e');
     } catch (e) {
       print('Error fetching phone: $e');
     }
@@ -146,7 +189,7 @@ class ApiService {
           'login': int.parse(login),
           'token': token,
         }),
-      );
+      ).timeout(const Duration(seconds: 30));
 
       print('📊 Trades Response Status: ${response.statusCode}');
       print('📦 Trades Response Body: ${response.body}');
@@ -173,6 +216,9 @@ class ApiService {
       } else if (response.statusCode == 401) {
         await _handleTokenExpiration();
       }
+    } on SocketException catch (e) {
+      print('❌ Network error fetching trades: $e');
+      rethrow;
     } catch (e) {
       print('Error fetching trades: $e');
     }
@@ -199,15 +245,18 @@ class ApiService {
           'SOAPAction': 'http://tempuri.org/ICabinetMicroService/GetCCPromo',
         },
         body: soapBody,
-      ).timeout(const Duration(seconds: 5));
+      ).timeout(const Duration(seconds: 10));
 
       if (response.statusCode == 200) {
         final promos = _parsePromoResponse(response.body);
         return promos;
       }
+    } on SocketException catch (e) {
+      // Silently fall back to mock data (API may be unreachable)
+      print('ℹ️ Network unavailable for promos, using offline data: $e');
     } catch (e) {
       // Silently fall back to mock data (API may be unreachable)
-      print('ℹ️ Using offline promo data');
+      print('ℹ️ Using offline promo data: $e');
     }
 
     // Return mock data as fallback (always available)
