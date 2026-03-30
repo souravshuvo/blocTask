@@ -1,45 +1,29 @@
-import 'package:community_feed/repositories/post_repository.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
-import 'blocks/auth_bloc.dart';
-import 'blocks/create_post_bloc.dart';
-import 'views/login_screen.dart';
+import 'package:flutter/services.dart';
+import 'data/app_data.dart';
+import 'screens/splash_screen.dart';
+import 'theme/app_theme.dart';
 
-void main() {
-  runApp(
-    MultiProvider(
-      providers: [Provider<PostRepository>(create: (_) => PostRepository())],
-      child: const MyApp(),
-    ),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppData.load();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.dark,
+  ));
+  runApp(const EPayApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class EPayApp extends StatelessWidget {
+  const EPayApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'ePay',
       debugShowCheckedModeBanner: false,
-      home: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(create: (_) => AuthBloc()),
-          BlocProvider<CreatePostBloc>(
-            create:
-                (context) => CreatePostBloc(
-                  postRepository: context.read<PostRepository>(),
-                ),
-          ),
-          BlocProvider<CreatePostBloc>(
-            create:
-                (context) => CreatePostBloc(
-                  postRepository: context.read<PostRepository>(),
-                ),
-          ),
-        ],
-        child: LoginScreen(),
-      ),
+      theme: AppTheme.theme,
+      home: const SplashScreen(),
     );
   }
 }

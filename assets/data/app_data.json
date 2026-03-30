@@ -1,0 +1,128 @@
+{
+  "user": {
+    "name": "Rahul",
+    "phone": "01701*****4",
+    "balance": 13999.00,
+    "points": 1972,
+    "avatar": "R"
+  },
+  "recent_contacts": [
+    {
+      "id": "1",
+      "name": "Samantha",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    },
+    {
+      "id": "2",
+      "name": "Rose Hope",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    }
+  ],
+  "all_contacts": [
+    {
+      "id": "3",
+      "name": "Andrea Summer",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    },
+    {
+      "id": "4",
+      "name": "Karen William",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    },
+    {
+      "id": "5",
+      "name": "Samantha",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    },
+    {
+      "id": "6",
+      "name": "James Paul",
+      "phone": "0987 3422 8756",
+      "type": "Bank"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "t1",
+      "type": "send",
+      "title": "Send Money",
+      "subtitle": "To Samantha",
+      "amount": -1000,
+      "date": "2024-03-15",
+      "status": "success"
+    },
+    {
+      "id": "t2",
+      "type": "add",
+      "title": "Add Money",
+      "subtitle": "From Bank Account",
+      "amount": 5000,
+      "date": "2024-03-14",
+      "status": "success"
+    },
+    {
+      "id": "t3",
+      "type": "cashout",
+      "title": "Cash Out",
+      "subtitle": "ATM - Basic Bank",
+      "amount": -3000,
+      "date": "2024-03-13",
+      "status": "success"
+    },
+    {
+      "id": "t4",
+      "type": "bill",
+      "title": "Electricity Bill",
+      "subtitle": "DESCO",
+      "amount": -1200,
+      "date": "2024-03-12",
+      "status": "success"
+    }
+  ],
+  "services": [
+    {"id": "s1", "name": "Cash in", "icon": "cash_in", "category": "main"},
+    {"id": "s2", "name": "Cash Out", "icon": "cash_out", "category": "main"},
+    {"id": "s3", "name": "Add Money", "icon": "add_money", "category": "main"},
+    {"id": "s4", "name": "Send Money", "icon": "send_money", "category": "main"},
+    {"id": "s5", "name": "Mobile Recharge", "icon": "mobile_recharge", "category": "extra"},
+    {"id": "s6", "name": "MRT Recharge", "icon": "mrt_recharge", "category": "extra"},
+    {"id": "s7", "name": "Make Payment", "icon": "make_payment", "category": "extra"},
+    {"id": "s8", "name": "Express Card Recharge", "icon": "express_card", "category": "extra"}
+  ],
+  "pay_bills": [
+    {"id": "b1", "name": "Electricity", "icon": "electricity"},
+    {"id": "b2", "name": "Gas", "icon": "gas"},
+    {"id": "b3", "name": "Water", "icon": "water"},
+    {"id": "b4", "name": "Internet", "icon": "internet"},
+    {"id": "b5", "name": "Telephone", "icon": "telephone"},
+    {"id": "b6", "name": "Credit Card", "icon": "credit_card"},
+    {"id": "b7", "name": "Govt. Fees", "icon": "govt_fees"},
+    {"id": "b8", "name": "Cable Network", "icon": "cable_network"}
+  ],
+  "partner_banks": [
+    {"id": "pb1", "name": "Basic Bank", "branch": "Mirpur 11"},
+    {"id": "pb2", "name": "Brak Bank", "branch": "Banani"},
+    {"id": "pb3", "name": "Islamic Bank", "branch": "Gulshan 1"},
+    {"id": "pb4", "name": "Dutch Bangla Bank", "branch": "Dhanmondi"},
+    {"id": "pb5", "name": "Eastern Bank", "branch": "Uttara"}
+  ],
+  "onboarding": [
+    {
+      "title": "Trusted by millions an essential part of your Financial journey",
+      "icon": "trust"
+    },
+    {
+      "title": "Pay all Bills in Bangladesh in hassle Free",
+      "icon": "payment"
+    },
+    {
+      "title": "Reliable and secure money transaction over the world",
+      "icon": "security"
+    }
+  ]
+}
