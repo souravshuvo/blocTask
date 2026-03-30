@@ -30,6 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: const SideMenu(),
       body: _selectedTab == 0 ? _buildHomeBody() : _buildStatementsBody(),
       bottomNavigationBar: _buildBottomNav(),
+      floatingActionButton: _buildFab(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 
@@ -63,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         bottom: false,
         child: Column(
           children: [
-            // Top row: avatar + name  |  points badge
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
               child: Row(
@@ -71,34 +72,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   // Avatar circle with initials
                   GestureDetector(
                     onTap: () => _scaffoldKey.currentState?.openDrawer(),
-                    child: Row(
+                    child: Stack(
                       children: [
                         Container(
                           width: 36,
                           height: 36,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.orange.shade300,
+                            color: const Color(0xFFE6614A),
                           ),
                           child: Center(
-                            child: Text(
-                              _user.name[0].toUpperCase(),
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 16,
-                              ),
+                            child: Image.asset(
+                              'assets/images/person.png',
+                              fit: BoxFit.contain,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        Text(
-                          _user.name.toUpperCase(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 15,
-                            letterSpacing: 0.5,
+                        // Active indicator with #FFA530
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: const Color(0xFFFFA530), // Active orange
+                              border: Border.all(
+                                color: Colors.white, // border for contrast
+                                width: 2,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -115,13 +119,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: Row(
                       children: [
-                        const Icon(Icons.emoji_events,
+                        const Icon(Icons.emoji_events_outlined,
                             color: Colors.white, size: 15),
                         const SizedBox(width: 4),
                         Text(
                           '${_user.points} Points',
                           style: const TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 12,
                           ),
@@ -154,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         _balanceVisible
                             ? 'Tk: ${_user.balance.toStringAsFixed(2)}'
-                            : 'Tk: ******.00',
+                            : 'Tk: ******',
                         style: const TextStyle(
                           color: Color(0xFF1A3A6B),
                           fontSize: 30,
@@ -400,54 +404,71 @@ class _HomeScreenState extends State<HomeScreen> {
 
   // ── Bottom Navigation ──────────────────────────────────────────────────────
   Widget _buildBottomNav() {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.black12, blurRadius: 8, offset: Offset(0, -2)),
-        ],
-      ),
-      child: SafeArea(
-        child: SizedBox(
-          height: 62,
-          child: Row(
-            children: [
-              // Home tab
-              _navItem(0, Icons.home_outlined, Icons.home, 'Home'),
-              // QR Scan – centre floating circle
-              Expanded(
-                child: Center(
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Container(
-                      width: 52,
-                      height: 52,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                            color: AppTheme.divider, width: 1.5),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.08),
-                            blurRadius: 8,
-                            offset: const Offset(0, -2),
-                          ),
-                        ],
-                      ),
-                      child: const Icon(Icons.qr_code_scanner,
-                          color: AppTheme.primaryDark, size: 26),
-                    ),
-                  ),
-                ),
-              ),
-              // Inbox tab
-              _navItem(2, Icons.inbox_outlined, Icons.inbox, 'Inbox'),
-            ],
-          ),
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      notchMargin: 8,
+      elevation: 12,
+      color: Colors.white,
+      child: SizedBox(
+        height: 70,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            _navItem(0, Icons.home_outlined, Icons.home, 'Home'),
+
+            const SizedBox(width: 60), // space for FAB notch
+
+            _navItem(2, Icons.inbox_outlined, Icons.inbox, 'Inbox'),
+          ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFab() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 70,
+          height: 70,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.15),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Container(
+              width: 54,
+              height: 54,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppTheme.bgLight,
+              ),
+              child: const Icon(
+                Icons.qr_code_scanner,
+                color: AppTheme.primaryDark,
+                size: 26,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        const Text(
+          'QR Scan',
+          style: TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w500,
+            color: AppTheme.textDark,
+          ),
+        ),
+      ],
     );
   }
 

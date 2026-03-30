@@ -43,7 +43,7 @@ class _AddMoneyScreenState extends State<AddMoneyScreen> {
             const Divider(height: 24),
             _buildSourceOption(0, 'Bank Account', Icons.account_balance_outlined),
             const SizedBox(height: 12),
-            _buildSourceOption(1, 'Internet Banking', Icons.language_outlined),
+            _buildSourceOption(1, 'Internet Banking', Icons.language),
           ],
         ),
       ),

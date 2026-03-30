@@ -109,48 +109,13 @@ class _SplashScreenState extends State<SplashScreen>
 
   Widget _buildLogo() {
     return SizedBox(
-      width: 80,
-      height: 80,
-      child: CustomPaint(
-        painter: _EpayLogoPainter(),
+      width: 280,
+      height: 280,
+      child: Image.asset(
+        'assets/images/company.png', // <-- your asset path
+        fit: BoxFit.contain,
       ),
     );
   }
 }
 
-class _EpayLogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = const Color(0xFF1A3A6B)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 6
-      ..strokeCap = StrokeCap.round;
-
-    final center = Offset(size.width / 2, size.height / 2);
-    final radius = size.width * 0.42;
-
-    // Draw "e" shape - arc from 30° to 330°
-    canvas.drawArc(
-      Rect.fromCircle(center: center, radius: radius),
-      0.6,
-      5.1,
-      false,
-      paint,
-    );
-
-    // Orange dot accent
-    final accentPaint = Paint()
-      ..color = const Color(0xFFF5A623)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawCircle(
-      Offset(center.dx + radius * 0.7, center.dy + radius * 0.2),
-      8,
-      accentPaint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}

@@ -333,24 +333,12 @@ class _SendMoneyConfirmScreenState extends State<SendMoneyConfirmScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Illustration
+              // Illustration using AssetImage
               SizedBox(
-                height: 100,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildPhoneWithArrow(true),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: const [
-                        SizedBox(height: 8),
-                        Icon(Icons.monetization_on, color: Color(0xFFF5A623), size: 20),
-                        Icon(Icons.monetization_on, color: Color(0xFFF5A623), size: 24),
-                        Icon(Icons.monetization_on, color: Color(0xFFF5A623), size: 20),
-                      ],
-                    ),
-                    _buildPhoneWithArrow(false),
-                  ],
+                height: 120,
+                child: Image.asset(
+                  'assets/images/sendMoney.png',
+                  fit: BoxFit.contain,
                 ),
               ),
               const SizedBox(height: 16),
@@ -367,7 +355,8 @@ class _SendMoneyConfirmScreenState extends State<SendMoneyConfirmScreen> {
                 textAlign: TextAlign.center,
                 text: TextSpan(
                   text: 'You have successfully\nSend ',
-                  style: const TextStyle(color: AppTheme.textGrey, fontSize: 14),
+                  style: const TextStyle(
+                      color: AppTheme.textGrey, fontSize: 14),
                   children: [
                     TextSpan(
                       text: 'TK ${_amount.toStringAsFixed(0)}',
@@ -404,23 +393,4 @@ class _SendMoneyConfirmScreenState extends State<SendMoneyConfirmScreen> {
     );
   }
 
-  Widget _buildPhoneWithArrow(bool isLeft) {
-    return Container(
-      width: 60,
-      height: 90,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-      decoration: BoxDecoration(
-        color: isLeft ? Colors.white : Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppTheme.divider, width: 2),
-      ),
-      child: Center(
-        child: Icon(
-          isLeft ? Icons.arrow_upward : Icons.check_circle_outline,
-          color: isLeft ? Colors.green : Colors.green,
-          size: 28,
-        ),
-      ),
-    );
-  }
 }

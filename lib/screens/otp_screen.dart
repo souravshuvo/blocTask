@@ -13,8 +13,10 @@ class OtpScreen extends StatefulWidget {
 class _OtpScreenState extends State<OtpScreen> {
   final List<String> _digits = ['2', '5', '0', '5'];
   final List<FocusNode> _focusNodes = List.generate(4, (_) => FocusNode());
-  final List<TextEditingController> _controllers =
-      List.generate(4, (i) => TextEditingController(text: i < 4 ? ['2', '5', '0', '5'][i] : ''));
+  final List<TextEditingController> _controllers = List.generate(
+    4,
+    (i) => TextEditingController(text: i < 4 ? ['2', '5', '0', '5'][i] : ''),
+  );
 
   @override
   void dispose() {
@@ -41,7 +43,10 @@ class _OtpScreenState extends State<OtpScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back, color: AppTheme.textDark),
+                    icon: const Icon(
+                      Icons.arrow_back,
+                      color: AppTheme.textDark,
+                    ),
                     onPressed: () => Navigator.pop(context),
                   ),
                   const BanglaButton(),
@@ -59,10 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
               const SizedBox(height: 8),
               const Text(
                 'We send 4 digit of code to +8801710234761',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppTheme.textGrey,
-                ),
+                style: TextStyle(fontSize: 14, color: AppTheme.textGrey),
               ),
               const SizedBox(height: 40),
               Row(
